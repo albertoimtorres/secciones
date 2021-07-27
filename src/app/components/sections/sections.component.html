@@ -1,6 +1,13 @@
 <div class="container">
     <div class="row">
         <div class="col-12">
+            <label for="">Secciones</label>
+            <section>
+                <select [(ngModel)]="currentSection" (ngModelChange)="selectSection($event)" name="listSection" class="selectpicker" id="listSection">
+                    <option value="">Seleccione una sección</option>
+                    <option *ngFor= "let section of listSections" [value]="section">{{section}}</option>
+                </select>
+            </section>
             <form [formGroup]="form" (ngSubmit)="submitForm()" novalidate>
                 <table class="table table-bordered">
                     <thead>

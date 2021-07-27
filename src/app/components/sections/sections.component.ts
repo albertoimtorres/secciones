@@ -15,7 +15,7 @@ import { ModalConfig } from '../modal/modal.config';
 export class SectionsComponent implements OnInit {
 
   /* Variables */
-  currentSection: number = 1;
+  currentSection?: number;
 
   isError: Boolean = false;
 
@@ -25,6 +25,10 @@ export class SectionsComponent implements OnInit {
   catalogs?: Catalogo[] = [];
 
   payload?: number[] = [];
+
+  listSections: number [] = [
+    1, 2, 3, 4, 5
+  ];
 
   //! Configuracación de modal
   public modalConfig: ModalConfig = {
@@ -61,17 +65,42 @@ export class SectionsComponent implements OnInit {
 
   ngOnInit(): void {
     /* Realiza la petición al servicio de sección y obtiene la data */
-    this.sectionService.getSection(this.currentSection).subscribe(
-      data => {
-        this.sections = data.secciones[0].campos;    
-      },
-      error => {
-        throw new Error(error);
-      }
-    );
+    this.currentSection = 1;
+
+    console.log('ESCENARIO 2');
+
+    this.selectSection(this.currentSection);
+    // this.sectionService.getSection(this.currentSection).subscribe(
+    //   data => {
+    //     this.sections = data.secciones[0].campos;    
+    //   },
+    //   error => {
+    //     throw new Error(error);
+    //   }
+    // );
   }
 
   get field() {return this.form.controls;}
+
+  selectSection(event: any) {
+    let sectionId = _.isNumber(event) ? event : +event;
+
+    console.log(sectionId);
+    
+
+    if (_.isEqual(sectionId, 0)) {
+      this.sections = [];
+    } else {
+      this.sectionService.getSection(sectionId).subscribe(
+        data => {
+          this.sections = data.secciones[0].campos;
+        },
+        error => {
+          throw new Error(error);
+        }
+      );
+    }
+  }
 
   async onCheckBoxChange(event: any) {
 

@@ -38,3 +38,7 @@ input[type="submit"] {
 p {
     text-align: center;
 }
+
+section {
+    margin-bottom: 15px;
+}
