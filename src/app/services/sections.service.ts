@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import {map} from 'rxjs/operators';
-import { Secciones, Campo } from '../models/sections.model';
+import { Secciones, Campo } from '../interfaces/sections.interface';
 
 @Injectable({
   providedIn: 'root'

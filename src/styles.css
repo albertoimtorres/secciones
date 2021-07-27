@@ -17,3 +17,32 @@ body {
 .bg-light {
     background-color: #9192AC !important;
 }
+
+gb-modal-window .modal-dialog {
+    border: 3px solid #262626;
+    border-radius: 11px;
+    margin-top: 15%;
+}
+gb-modal-window .modal-dialog .modal-content {
+    padding: 1.25rem;
+    border: none;
+}
+gb-modal-window .modal-dialog .modal-content a {
+    color: teal;
+}
+gb-modal-window .modal-dialog .modal-content .modal-header {
+    justify-content: center;
+    flex-direction: column;
+    border: none;
+    text-align: center;
+}
+gb-modal-window .modal-dialog .modal-content .modal-title {
+    width: 100%;
+    color: black;
+}
+gb-modal-window .modal-dialog .modal-content .modal-body {
+    font-size: 0.875rem;
+}
+gb-modal-window .modal-dialog .modal-content .modal-footer {
+    border-top: none;
+}

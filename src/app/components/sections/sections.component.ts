@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { SectionsService } from '../../services/sections.service';
-import { Campo, Catalogo } from '../../models/sections.model';
-import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import _ from 'lodash';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ModalComponent } from '../modal/modal.component';
+import { SectionsService } from '../../services/sections.service';
+import { Campo, Catalogo, Seccione } from '../../interfaces/sections.interface';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
+import { ModalConfig } from '../modal/modal.config';
 
 @Component({
   selector: 'app-sections',
@@ -21,15 +24,31 @@ export class SectionsComponent implements OnInit {
 
   payload?: number[];
 
+  public modalConfig: ModalConfig = {
+    modalTitle: "Title",
+    onDismiss: () => {
+      return true
+    },
+    dismissButtonLabel: "Dismiss",
+    onClose: () => {
+      return true
+    },
+    closeButtonLabel: "Close"
+  }
+
   /* Forms */
   form: FormGroup;
 
+  /* Input/Output */
+  @ViewChild('modal') private modal?: ModalComponent
+
   constructor(
     private sectionService: SectionsService,
-    private formBuilder: FormBuilder,
+    private modalService: NgbModal,
+    private fb: FormBuilder,
   ) {
-    this.form = this.formBuilder.group({
-      checkArray: this.formBuilder.array([], [Validators.required])
+    this.form = this.fb.group({
+      checkSection: this.fb.array([], [Validators.required])
     });
   }
 
@@ -45,10 +64,25 @@ export class SectionsComponent implements OnInit {
     );
   }
 
-  onCheckBoxChange(event: any) {
-    const checkArray: FormArray = this.form.get('checkArray') as FormArray;
+  get field() {return this.form.controls;}
 
-    console.log('CHECK ARRAY: ', checkArray);
+  async onCheckBoxChange(event: any) {
+    let idCampo = +event.target.value;
+
+    const checkSection: FormArray = this.form.get('checkSection') as FormArray;
+
+    console.log('CHECK ARRAY: ', event.target.value);
+
+    if (event.target.checked) {
+
+      let data = this.sections?.filter(section => _.isEqual(section.id_campo, idCampo))[0];
+
+      if (_.has(data, 'catalogo')) {
+        await this.modal?.open();
+      } else {
+        console.log(data);
+      }
+    }
     
     // let idCampo = +event.target.value;
 
@@ -67,7 +101,9 @@ export class SectionsComponent implements OnInit {
   }
 
   submitForm() {
-    console.log(this.form.value)
+    console.log(this.form);
+    console.log(this.field);
+    
   }
 
 }
