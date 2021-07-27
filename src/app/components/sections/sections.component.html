@@ -1,0 +1,67 @@
+<!-- <div class="container">
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-bordered">
+                <thead>
+                    <tr *ngFor="let campo of sections; index as i">
+                        <ng-container *ngIf="campo.id_campo === 41">
+                            <th>Id</th>
+                            <th scope="col">Seleccionar</th>
+                            <th scope="col">Etiqueta</th>
+                        </ng-container>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let campo of sections; index as i">
+                        <ng-container *ngIf="campo.id_campo === 41">
+                            <td>{{i - 1}}</td>
+                            <td>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="customCheck1" [value]="campo.id_campo" (change)="onCheckBoxChange($event)">
+                                </div>
+                            </td>
+                            <td>
+                                {{campo.etiqueta}}
+                            </td>
+                        </ng-container>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div> -->
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <form [formGroup]="form" (ngSubmit)="submitForm()" novalidate>
+                <table class="table table-bordered">
+                    <thead>
+                        <th>Id</th>
+                        <th scope="col">Seleccionar</th>
+                        <th scope="col">Etiqueta</th>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let campo of sections; index as i">
+                            <td>{{i + 1}}</td>
+                            <td>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" [value]="campo.id_campo" (change)="onCheckBoxChange($event)">
+                                </div>
+                            </td>
+                            <td>
+                                {{campo.etiqueta}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <p class="error" *ngIf="this.form.controls['checkArray'].errors?.required">
+                    Checkbox is required, select atleast one value.
+                </p>
+
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+    </div>
+</div>
