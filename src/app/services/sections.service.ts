@@ -19,6 +19,6 @@ export class SectionsService {
   }
 
   getSection(id: number): Observable<Secciones> {
-    return this.http.get<Secciones>(`${this.apiGnpUri}/configurador/seccion?id_seccion=${id}`);
+    return this.http.get<Secciones>(`${this.apiGnpUri}/configurador/seccion?id_seccion=${id}`).pipe(map(res => res));
   }
 }

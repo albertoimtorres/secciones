@@ -25,7 +25,8 @@ export class SectionsComponent implements OnInit {
   payload?: number[];
 
   public modalConfig: ModalConfig = {
-    modalTitle: "Title",
+    data: {},
+    modalTitle: "Seccion - Catalogos",
     onDismiss: () => {
       return true
     },
@@ -33,7 +34,10 @@ export class SectionsComponent implements OnInit {
     onClose: () => {
       return true
     },
-    closeButtonLabel: "Close"
+    closeButtonLabel: "Close",
+    geData: (data: any) => {
+      return data;
+    }
   }
 
   /* Forms */
@@ -77,8 +81,10 @@ export class SectionsComponent implements OnInit {
 
       let data = this.sections?.filter(section => _.isEqual(section.id_campo, idCampo))[0];
 
+      console.log('¿DATA?: ', data);
+
       if (_.has(data, 'catalogo')) {
-        await this.modal?.open();
+        await this.modal?.open(data);
       } else {
         console.log(data);
       }
@@ -107,3 +113,7 @@ export class SectionsComponent implements OnInit {
   }
 
 }
+function onCheckBoxChangeCatalog(event: any, any: any) {
+  throw new Error('Function not implemented.');
+}
+

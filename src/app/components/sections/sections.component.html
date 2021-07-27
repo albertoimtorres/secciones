@@ -37,8 +37,29 @@
     </div>
 </div>
 
-<!-- <modal #modal [modalConfig]="modalConfig">
-    It works!
-</modal> -->
-
-<app-modal #modal [modalConfig]="modalConfig"></app-modal>
+<app-modal #modal [modalConfig]="modalConfig">
+    <!-- <ng-container *ngFor="let data of modalConfig.data.catalogo?.valores"> -->
+    <table class="table table-bordered">
+        <thead>
+            <th>Id</th>
+            <th>Seleccionar</th>
+            <th>descripcion</th>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of modalConfig.data.catalogo?.valores">
+                <td>{{data.id_valor}}</td>
+                <td>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input"
+                            id="{{'catalogo_' + data.id_valor}}" name="{{'catalogo_' + data.id_valor}}"
+                            [value]="data.id_valor" (change)="onCheckBoxChange($event)">
+                    </div>
+                </td>
+                <td>
+                    {{data.descripcion}}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <!-- </ng-container> -->
+</app-modal>

@@ -24,7 +24,12 @@ export class ModalComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  open(): Promise<boolean> {
+  async getData(data: any) {
+    return data;
+  }
+
+  open(data: any): Promise<boolean> {
+    this.modalConfig.data = data;
     return new Promise<boolean>(resolve => {
       this.modalRef = this.modalService.open(this.modalContent)
       this.modalRef.result.then(resolve, resolve)

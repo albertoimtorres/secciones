@@ -1,4 +1,6 @@
 export interface ModalConfig {
+    data: any;
+    geData(data: any): Promise<any>;
     modalTitle: string;
     dismissButtonLabel: string;
     closeButtonLabel: string;
