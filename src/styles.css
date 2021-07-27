@@ -10,9 +10,9 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
-body {
-    /* background-color: #23265b; */
-}
+/* body {
+    background-color: #23265b;
+} */
 
 .bg-light {
     background-color: #9192AC !important;

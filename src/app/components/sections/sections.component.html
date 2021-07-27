@@ -25,11 +25,16 @@
                     </tbody>
                 </table>
 
-                <div>
-                    <p class="error" *ngIf="this.form.controls['checkSection'].errors?.required">
-                        Checkbox is required, select atleast one value.
+                <div *ngIf="isError">
+                    <p class="error">
+                        Se requiere una casilla de verificación, seleccione al menos un valor.
                     </p>
                 </div>
+
+                <!-- <div *ngIf="!isError && payload?.length">
+                    <p>Se enviaran los siguientes ids</p>
+                    {{payload}}
+                </div> -->
 
                 <input type="submit" value="Submit">
             </form>

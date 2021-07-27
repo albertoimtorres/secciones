@@ -17,13 +17,16 @@ export class SectionsComponent implements OnInit {
   /* Variables */
   currentSection: number = 1;
 
+  isError: Boolean = false;
+
   /* Objects */
   sections?: Campo[];
 
   catalogs?: Catalogo[] = [];
 
-  payload?: number[];
+  payload?: number[] = [];
 
+  //! Configuracación de modal
   public modalConfig: ModalConfig = {
     data: {},
     modalTitle: "Seccion - Catalogos",
@@ -49,10 +52,10 @@ export class SectionsComponent implements OnInit {
   constructor(
     private sectionService: SectionsService,
     private modalService: NgbModal,
-    private fb: FormBuilder,
+    private formBuilder: FormBuilder,
   ) {
-    this.form = this.fb.group({
-      checkSection: this.fb.array([], [Validators.required])
+    this.form = this.formBuilder.group({
+      checkSection: this.formBuilder.array([], [Validators.required])
     });
   }
 
@@ -71,49 +74,39 @@ export class SectionsComponent implements OnInit {
   get field() {return this.form.controls;}
 
   async onCheckBoxChange(event: any) {
+
+    // const checkSection: FormArray = this.form.get('checkSection') as FormArray;
+    // console.log('CHECK SECTION: ', checkSection);
+    
+    console.log('EVENT TARGET VALUE: ', event.target.value);
+    
     let idCampo = +event.target.value;
 
-    const checkSection: FormArray = this.form.get('checkSection') as FormArray;
-
-    console.log('CHECK ARRAY: ', event.target.value);
-
-    if (event.target.checked) {
+    if (idCampo) {
 
       let data = this.sections?.filter(section => _.isEqual(section.id_campo, idCampo))[0];
 
-      console.log('¿DATA?: ', data);
-
       if (_.has(data, 'catalogo')) {
+
         await this.modal?.open(data);
+
       } else {
-        console.log(data);
+        //! Arreglo de ids
+        this.payload?.push(idCampo);
       }
+    } else {
+      console.log('FALSO: ', event.target.value);
     }
-    
-    // let idCampo = +event.target.value;
-
-    // if (event.target.checked) {
-
-    //   let data = this.sections?.filter(section => _.isEqual(section.id_campo, idCampo))[0];
-
-    //   if (_.has(data, 'catalogo')) {
-    //     console.log('MOSTRAR MODAL CON ARRAY DE VALORES');
-    //   } else {
-    //     this.payload?.push(idCampo);
-    //   }
-    // } else {
-    //   console.log('FALSO: ', event.target.value);
-    // }
   }
 
   submitForm() {
-    console.log(this.form);
-    console.log(this.field);
-    
+    if (_.size(this.payload) > 0) {
+      this.isError = false;
+      console.log('SEND PAYLOAD: ', this.payload);
+    } else {
+      this.isError = true;
+    }
   }
 
-}
-function onCheckBoxChangeCatalog(event: any, any: any) {
-  throw new Error('Function not implemented.');
 }
 
