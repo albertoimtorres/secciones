@@ -9,7 +9,7 @@
                 </select>
             </section>
             <form [formGroup]="form" (ngSubmit)="submitForm()" novalidate>
-                <table class="table table-bordered">
+                <table class="table table-bordered sections">
                     <thead>
                         <th>Id</th>
                         <th scope="col">Seleccionar</th>
@@ -51,7 +51,7 @@
 
 <app-modal #modal [modalConfig]="modalConfig">
     <!-- <ng-container *ngFor="let data of modalConfig.data.catalogo?.valores"> -->
-    <table class="table table-bordered">
+    <table class="table table-bordered catalogs">
         <thead>
             <th>Id</th>
             <th>Seleccionar</th>

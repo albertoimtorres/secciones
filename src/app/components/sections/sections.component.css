@@ -10,10 +10,10 @@ h4 {
     margin: 2rem 0rem 1rem;
 }
 
-/* .table {
-    color: #fff;
+.sections {
+    color: #edfbfb;
     border: white;
-} */
+}
 
 .table-image td, .table-image th {
     vertical-align: middle;
