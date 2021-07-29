@@ -29,7 +29,7 @@ export class ModalComponent implements OnInit {
   }
 
   open(data: any): Promise<boolean> {
-    this.modalConfig.data = data;
+    this.modalConfig.data = data; //! Se agrega la data.
     return new Promise<boolean>(resolve => {
       this.modalRef = this.modalService.open(this.modalContent)
       this.modalRef.result.then(resolve, resolve)
