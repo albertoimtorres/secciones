@@ -11,18 +11,20 @@
             <form [formGroup]="form" (ngSubmit)="submitForm()" novalidate>
                 <table class="table table-bordered sections">
                     <thead>
-                        <th>Id</th>
+                        <th>#</th>
+                        <th>Id Campo</th>
                         <th scope="col">Seleccionar</th>
                         <th scope="col">Etiqueta</th>
                     </thead>
                     <tbody>
                         <tr *ngFor="let campo of sections; index as i">
                             <td>{{i + 1}}</td>
+                            <td>{{campo.id_campo}}</td>
                             <td>
                                 <div class="custom-control custom-checkbox">
                                     <input type="checkbox" class="custom-control-input"
-                                        id="{{'section_' + campo.id_campo}}" name="{{'section_' + campo.id_campo}}"
-                                        [value]="campo.id_campo" (change)="onCheckBoxChange($event)">
+                                        id="{{campo.id_campo}}" name="{{campo.id_campo}}"
+                                        [value]="campo.id_campo" (change)="onCheckBoxChange($event, campo)">
                                 </div>
                             </td>
                             <td>
@@ -32,7 +34,7 @@
                     </tbody>
                 </table>
 
-                <div *ngIf="isError">
+                <div *ngIf="this.form.controls['checkSection'].errors?.required">
                     <p class="error">
                         Se requiere una casilla de verificación, seleccione al menos un valor.
                     </p>
@@ -53,22 +55,24 @@
     <!-- <ng-container *ngFor="let data of modalConfig.data.catalogo?.valores"> -->
     <table class="table table-bordered catalogs">
         <thead>
-            <th>Id</th>
+            <th>#</th>
+            <th>Id Valor</th>
             <th>Seleccionar</th>
             <th>descripcion</th>
         </thead>
         <tbody>
-            <tr *ngFor="let data of modalConfig.data.catalogo?.valores">
-                <td>{{data.id_valor}}</td>
+            <tr *ngFor="let valor of modalConfig.data.catalogo?.valores; index as i">
+                <td>{{i + 1}}</td>
+                <td>{{valor.id_valor}}</td>
                 <td>
                     <div class="custom-control custom-checkbox">
                         <input type="checkbox" class="custom-control-input"
-                            id="{{'catalogo_' + data.id_valor}}" name="{{'catalogo_' + data.id_valor}}"
-                            [value]="data.id_valor" (change)="onCheckBoxChange($event)">
+                            id="{{valor.id_valor}}" name="{{valor.id_valor}}"
+                            [value]="valor.id_valor" (change)="onCheckBoxChange($event, valor)">
                     </div>
                 </td>
                 <td>
-                    {{data.descripcion}}
+                    {{valor.descripcion}}
                 </td>
             </tr>
         </tbody>
