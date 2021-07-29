@@ -3,9 +3,10 @@
         <div class="col-12">
             <label for="">Secciones</label>
             <section>
-                <select [(ngModel)]="currentSection" (ngModelChange)="selectSection($event)" name="listSection" class="selectpicker" id="listSection">
+                <select [(ngModel)]="currentSection" (ngModelChange)="selectSection($event)" name="listSection"
+                    class="selectpicker" id="listSection">
                     <option value="">Seleccione una sección</option>
-                    <option *ngFor= "let section of listSections" [value]="section">{{section}}</option>
+                    <option *ngFor="let section of listSections" [value]="section">{{section}}</option>
                 </select>
             </section>
             <form [formGroup]="form" (ngSubmit)="submitForm()" novalidate>
@@ -17,14 +18,14 @@
                         <th scope="col">Etiqueta</th>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let campo of sections; index as i">
+                        <tr formArrayName="checkSection" *ngFor="let campo of sections; index as i">
                             <td>{{i + 1}}</td>
                             <td>{{campo.id_campo}}</td>
                             <td>
                                 <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input"
-                                        id="{{campo.id_campo}}" name="{{campo.id_campo}}"
-                                        [value]="campo.id_campo" (change)="onCheckBoxChange($event, campo)">
+                                    <input type="checkbox" class="custom-control-input" id="{{campo.id_campo}}"
+                                        name="{{campo.id_campo}}" [value]="campo.id_campo"
+                                        (change)="onCheckBoxChange($event, campo, modal)">
                                 </div>
                             </td>
                             <td>
@@ -45,14 +46,14 @@
                     {{payload}}
                 </div> -->
 
-                <input [attr.disabled]="this.form.controls['checkSection'].errors?.required" type="submit" value="Submit">
+                <input [attr.disabled]="this.form.controls['checkSection'].errors?.required" type="submit"
+                    value="Submit">
             </form>
         </div>
     </div>
 </div>
 
 <app-modal #modal [modalConfig]="modalConfig">
-    <!-- <ng-container *ngFor="let data of modalConfig.data.catalogo?.valores"> -->
     <table class="table table-bordered catalogs">
         <thead>
             <th>#</th>
@@ -66,9 +67,9 @@
                 <td>{{valor.id_valor}}</td>
                 <td>
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input"
-                            id="{{valor.id_valor}}" name="{{valor.id_valor}}"
-                            [value]="valor.id_valor" (change)="onCheckBoxChange($event, valor)">
+                        <input type="checkbox" class="custom-control-input" id="{{valor.id_valor}}"
+                            name="{{valor.id_valor}}" [value]="valor.id_valor"
+                            (change)="onCheckBoxChange($event, valor, modal)">
                     </div>
                 </td>
                 <td>
@@ -77,5 +78,4 @@
             </tr>
         </tbody>
     </table>
-    <!-- </ng-container> -->
 </app-modal>

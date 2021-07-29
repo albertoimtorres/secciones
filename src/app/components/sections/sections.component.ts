@@ -3,14 +3,15 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ModalComponent } from '../modal/modal.component';
 import { SectionsService } from '../../services/sections.service';
 import { Campo, Catalogo, Seccione } from '../../interfaces/sections.interface';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal, NgbModalConfig} from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { ModalConfig } from '../modal/modal.config';
 
 @Component({
   selector: 'app-sections',
   templateUrl: './sections.component.html',
-  styleUrls: ['./sections.component.css']
+  styleUrls: ['./sections.component.css'],
+  providers: [NgbModalConfig, NgbModal]
 })
 export class SectionsComponent implements OnInit {
 
@@ -48,6 +49,16 @@ export class SectionsComponent implements OnInit {
     closeButtonLabel: "Close",
     geData: (data: any) => {
       return data;
+    },
+    disableCloseButton: (bool: boolean) => {
+      if (!bool) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    enableCloseButton: () => {
+      return false;
     }
   }
 
@@ -98,30 +109,33 @@ export class SectionsComponent implements OnInit {
     }
   }
 
-  async onCheckBoxChange(event: any, obj: any) {
+  async onCheckBoxChange(event: any, obj: any, modal: any) {
     const {value, checked} = event.target;
     const checkSection: FormArray = this.form.get('checkSection') as FormArray;
 
-    console.log('CHECKED: ', checked, 'VALUE: ', value, obj);
+    // console.log('CHECKED: ', checked, 'VALUE: ', value, 'DATA', obj, 'MODAL: ', modal);
 
-    if (checked && _.has(obj, 'catalogo')) {
-      this.payload = {idCampo: value, catalogs: []};
-      this.modal?.open(obj);
-    } else if (checked) {
-      if (_.has(obj, 'id_valor')) {
-        this.payload.catalogs.push(value);
+    if (checked) {
 
-        checkSection.push(new FormControl(this.payload));
-      } else {
-        checkSection.push(new FormControl({idCampo: value}));
+      if (_.has(obj, 'catalogo')) {
+        this.payload = {idCampo: value, catalogs: []};
+
+        modal.open(obj);
+
+      } else if (!_.has(obj, 'catalogo')) {
+
+        if (_.has(obj, 'id_valor')) {
+          this.payload.catalogs.push(value);
+        } else {
+          this.payload = {idCampo: value};
+        }
+
       }
+
+      checkSection.push(new FormControl(this.payload));
+
     } else {
       let index = 0;
-
-      if (_.has(obj, 'id_valor')) {
-        console.log(checkSection, value);
-      }
-
       checkSection.controls.forEach((item) => {
         if (_.has(item.value, 'catalogs')) {
           if (_.isEqual(item.value.idCampo, value)) {
@@ -138,6 +152,7 @@ export class SectionsComponent implements OnInit {
         index++;
       });
     }
+
   }
 
   submitForm() {

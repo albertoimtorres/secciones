@@ -13,7 +13,7 @@
         </button>
         <button type="button" class="btn btn-outline-primary" (click)="close()"
             *ngIf="modalConfig.hideCloseButton === undefined || !modalConfig.hideCloseButton()"
-            [disabled]="modalConfig.disableCloseButton !== undefined && modalConfig.disableCloseButton()">
+            [disabled]="modalConfig.disableCloseButton !== undefined && modalConfig.disableCloseButton(true)">
             {{ modalConfig.closeButtonLabel }}
         </button>
     </div>

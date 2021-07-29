@@ -8,8 +8,9 @@ export interface ModalConfig {
     shouldDismiss?(): Promise<boolean> | boolean;
     onClose?(): Promise<boolean> | boolean;
     onDismiss?(): Promise<boolean> | boolean;
-    disableCloseButton?(): boolean;
+    disableCloseButton?(bool?: boolean): boolean;
+    enableCloseButton?(): boolean;
     disableDismissButton?(): boolean;
-    hideCloseButton?(): boolean;
+    hideCloseButton?(bool?: Boolean): boolean;
     hideDismissButton?(): boolean;
 }
