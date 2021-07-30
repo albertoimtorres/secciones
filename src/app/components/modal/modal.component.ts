@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, TemplateRef, EventEmitter, Output } from '@angular/core';
 import { ModalConfig } from './modal.config';
 import { NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -14,6 +14,9 @@ export class ModalComponent implements OnInit {
 
   @ViewChild('modal')
   private modalContent!: TemplateRef<ModalComponent>;
+
+  @Output()
+  dismissEvent = new EventEmitter<boolean>();
 
   private modalRef!: NgbModalRef;
 
@@ -44,6 +47,7 @@ export class ModalComponent implements OnInit {
   }
 
   async dismiss(): Promise<void> {
+    this.dismissEvent.emit(true);
     if (this.modalConfig.shouldDismiss === undefined || (await this.modalConfig.shouldDismiss())) {
       const result = this.modalConfig.onDismiss === undefined || (await this.modalConfig.onDismiss())
       this.modalRef.dismiss(result)

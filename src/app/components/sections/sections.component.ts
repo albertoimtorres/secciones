@@ -29,7 +29,7 @@ export class SectionsComponent implements OnInit {
 
   catalogs?: Catalogo[] = [];
 
-  payload?: any = {};
+  payload?: any = {idCampo: '', catalogs: []};;
 
   listSections: number [] = [
     1, 2, 3, 4, 5
@@ -40,25 +40,18 @@ export class SectionsComponent implements OnInit {
     data: {},
     modalTitle: "Seccion - Catalogos",
     onDismiss: () => {
-      return true
+      return true;
     },
     dismissButtonLabel: "Dismiss",
     onClose: () => {
-      return true
+      return true;
     },
     closeButtonLabel: "Close",
-    geData: (data: any) => {
+    getData: (data: any) => {
       return data;
     },
-    disableCloseButton: (bool: boolean) => {
-      if (!bool) {
-        return true;
-      } else {
-        return false;
-      }
-    },
-    enableCloseButton: () => {
-      return false;
+    disableCloseButton: () => {
+      return true;
     }
   }
 
@@ -82,7 +75,7 @@ export class SectionsComponent implements OnInit {
     /* Realiza la petición al servicio de sección y obtiene la data */
     this.currentSection = 1;
 
-    this.payload = {};
+    this.payload = {idCampo: '', catalogs: []};;
 
     this.selectSection(this.currentSection);
   }
@@ -91,9 +84,6 @@ export class SectionsComponent implements OnInit {
 
   selectSection(event: any) {
     let sectionId = _.isNumber(event) ? event : +event;
-
-    console.log(sectionId);
-    
 
     if (_.isEqual(sectionId, 0)) {
       this.sections = [];
@@ -109,51 +99,90 @@ export class SectionsComponent implements OnInit {
     }
   }
 
-  async onCheckBoxChange(event: any, obj: any, modal: any) {
-    const {value, checked} = event.target;
-    const checkSection: FormArray = this.form.get('checkSection') as FormArray;
+  enableButton(bool: boolean) {
+    this.modalConfig.disableCloseButton = () => {
+      return bool;
+    }
+  }
 
-    // console.log('CHECKED: ', checked, 'VALUE: ', value, 'DATA', obj, 'MODAL: ', modal);
+  cleanPayload() {
+    if (_.has(this.payload, 'catalogs') && this.payload.catalogs.length > 0) {
+      this.payload = {};
+    }
+  }
+
+  onCheckBoxChangeSeccion(event: any, obj: any, modal: any) {
+    console.log('EVENT 1: ', event, 'OBJETO 1: ', obj, 'MODAL 1: ', modal);
+
+    const {value, checked} = event.target;
 
     if (checked) {
-
       if (_.has(obj, 'catalogo')) {
-        this.payload = {idCampo: value, catalogs: []};
-
+        this.payload.idCampo = value;
         modal.open(obj);
-
-      } else if (!_.has(obj, 'catalogo')) {
-
-        if (_.has(obj, 'id_valor')) {
-          this.payload.catalogs.push(value);
-        } else {
-          this.payload = {idCampo: value};
-        }
-
+      } else {
+        this.payload.idCampo = value;
       }
-
-      checkSection.push(new FormControl(this.payload));
-
-    } else {
-      let index = 0;
-      checkSection.controls.forEach((item) => {
-        if (_.has(item.value, 'catalogs')) {
-          if (_.isEqual(item.value.idCampo, value)) {
-            checkSection.removeAt(index);
-            return;
-          } else if (_.includes(item.value.catalogs, value)) {
-            item.value.catalogs = _.filter(item.value.catalogs, catalog => catalog !== value);
-            return;
-          }
-        } else if (_.isEqual(item.value.idCampo, value)) {
-          checkSection.removeAt(index);
-          return;
-        }
-        index++;
-      });
     }
-
+    
   }
+
+  //** FALTA CAPTAR EL EVENTO DISMISS DEL HIJO (MODAL) PARA LIMPIAR EL PAYLOAD Y LIMPIAR EL CHECKBOX AL CERRAR EL MODAL */
+
+  onCheckBoxChangeCampo(event: any, obj: any, modal: any) {
+    console.log('EVENT 2: ', event, 'OBJETO 2: ', obj, 'MODAL 2: ', modal, 'PAYLOAD: ', this.payload);
+
+    const {value, checked} = event.target;
+
+    if (checked) {
+      this.payload.catalogs.push(value);
+      this.enableButton(false);
+    } else {
+      this.enableButton(true);
+    }
+  }
+
+  // async onCheckBoxChange(event: any, obj: any, modal: any) {
+  //   const {value, checked} = event.target;
+  //   const checkSection: FormArray = this.form.get('checkSection') as FormArray;
+
+  //   // console.log('CHECKED: ', checked, 'VALUE: ', value, 'DATA', obj, 'MODAL: ', modal);
+
+  //   if (checked) {
+
+  //     if (_.has(obj, 'catalogo')) {
+  //       this.payload.idCampo = value; // {idCampo: value, catalogs: []};
+
+  //       modal.open(obj);
+
+  //     } else if (!_.has(obj, 'catalogo')) {
+
+  //       if (_.has(obj, 'id_valor')) {
+
+  //         this.payload.catalogs.push(value);
+
+  //         modal.modalConfig.disableCloseButton = () => {
+  //           return false;
+  //         }
+
+  //       } else {
+  //         this.payload = {idCampo: value};
+  //       }
+  //     }
+      
+  //     checkSection.push(new FormControl(this.payload));
+
+  //   } else {
+  //     let index = 0;
+
+  //     checkSection.controls.forEach((item) => {
+  //       let searchValue = item.value;
+
+  //       console.log(searchValue);
+        
+  //     });
+  //   }
+  // }
 
   submitForm() {
     console.log(_.uniqBy(this.form.value.checkSection, 'idCampo'));

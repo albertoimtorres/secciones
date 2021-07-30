@@ -1,6 +1,6 @@
 export interface ModalConfig {
     data: any;
-    geData(data: any): Promise<any>;
+    getData(data: any): Promise<any>;
     modalTitle: string;
     dismissButtonLabel: string;
     closeButtonLabel: string;
@@ -8,9 +8,8 @@ export interface ModalConfig {
     shouldDismiss?(): Promise<boolean> | boolean;
     onClose?(): Promise<boolean> | boolean;
     onDismiss?(): Promise<boolean> | boolean;
-    disableCloseButton?(bool?: boolean): boolean;
-    enableCloseButton?(): boolean;
+    disableCloseButton?(): boolean;
     disableDismissButton?(): boolean;
-    hideCloseButton?(bool?: Boolean): boolean;
+    hideCloseButton?(): boolean;
     hideDismissButton?(): boolean;
 }
