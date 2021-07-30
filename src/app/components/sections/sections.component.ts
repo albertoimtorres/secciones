@@ -29,7 +29,7 @@ export class SectionsComponent implements OnInit {
 
   catalogs?: Catalogo[] = [];
 
-  payload?: any = {idCampo: '', catalogs: []};;
+  payload?: any = {idCampo: '', catalogs: []};
 
   listSections: number [] = [
     1, 2, 3, 4, 5
@@ -75,7 +75,7 @@ export class SectionsComponent implements OnInit {
     /* Realiza la petición al servicio de sección y obtiene la data */
     this.currentSection = 1;
 
-    this.payload = {idCampo: '', catalogs: []};;
+    // this.payload = {idCampo: '', catalogs: []};
 
     this.selectSection(this.currentSection);
   }
@@ -113,15 +113,20 @@ export class SectionsComponent implements OnInit {
 
   onCheckBoxChangeSeccion(event: any, obj: any, modal: any) {
     console.log('EVENT 1: ', event, 'OBJETO 1: ', obj, 'MODAL 1: ', modal);
+    let checkSection: FormArray = this.form.get('checkSection') as FormArray;
 
     const {value, checked} = event.target;
 
     if (checked) {
       if (_.has(obj, 'catalogo')) {
         this.payload.idCampo = value;
+        checkSection.push(new FormControl(this.payload));
         modal.open(obj);
+        console.log('PAYLOAD MODAL: ', this.payload);
       } else {
         this.payload.idCampo = value;
+        console.log('PAYLOAD: ', this.payload);
+        checkSection.push(new FormControl(_.omit(this.payload, 'catalogs')));
       }
     }
     
@@ -131,12 +136,14 @@ export class SectionsComponent implements OnInit {
 
   onCheckBoxChangeCampo(event: any, obj: any, modal: any) {
     console.log('EVENT 2: ', event, 'OBJETO 2: ', obj, 'MODAL 2: ', modal, 'PAYLOAD: ', this.payload);
+    let checkSection: FormArray = this.form.get('checkSection') as FormArray;
 
     const {value, checked} = event.target;
 
     if (checked) {
       this.payload.catalogs.push(value);
       this.enableButton(false);
+      checkSection.push(new FormControl(this.payload));
     } else {
       this.enableButton(true);
     }
